@@ -1,0 +1,19 @@
+{
+   "author": "famlam",
+   "background": {
+      "scripts": [ "background.js" ]
+   },
+   "content_security_policy": "default-src 'self' ",
+   "description": "Checks for dead, parked or redirected domains based upon the results of the redundancy check.",
+   "externally_connectable": {
+      "matches": [ "https://arestwo.org/famlam/redundantRuleChecker.html","https://abpvn.com/ruleChecker/redundantRuleChecker.html" ]
+   },
+   "homepage_url": "https://abpvn.com/ruleChecker/redundantRuleChecker.html",
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh71DXH8503L/WLOu5w4Cl40O7BygFs+jnshIwUag8CfISLNJvpp3zAU9DxRsHRdYN7btKkALeVSVMCSvM8Eb26Mibb0L4yF8Wh+gytYNLBdrgshmehi6Rt6CMZlN14zYtyHgo9vEjxpjBiCMjtLz1DMH3l2rfFXKjsknynmUVyVyhuq+JrHL7cRWGh+MvWy+HqyVQYLo2Rf9MctCgE5lvYxB5EkbD11K6Hfs2+v5DcoK/uqInZUiqhWPNZmkZ4yEfnodYjm7rqcnsJIYJ2L1GtANwVEKv/91Nt7ktFNhXaYvF6MdqQ4/4FbAfjpd4uPEPdDgHKR2rmgEMXOSAWueRQIDAQAB",
+   "manifest_version": 3,
+   "minimum_chrome_version": "26",
+   "name": "Domain check contrib",
+   "permissions": [ "tabs", "webNavigation", "webRequest", "webRequestBlocking", "\u003Call_urls>", "contentSettings", "alarms" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.0.1"
+}
