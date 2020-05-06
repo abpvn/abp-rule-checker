@@ -457,7 +457,7 @@ var startToolDomainCheck = function() {
     addTab("Domaincheck", tabTitle, tabContent);
     switchTab("Domaincheck");
 
-    var extensionURL = isOpera() ? "data:text/html,the extension for Opera will be added as soon as possible, sorry to keep you waiting :(" : "https://abpvn.com/ruleChecker/domain-check.zip";
+    var extensionURL = "https://abpvn.com/ruleChecker/domain-check.zip";
     if (isSupported) {
       chromeConnect(maxIndent, true);
       var div = createTag("div", {"class": "workerUnsupported extensionMissing hidden"}, {textContent: "Unfortunately this tool has to perform actions that web pages are not allowed to do by themselves. Browser extensions have more permissions and can therefore aid in this process. Therefore, in order to use this tool, you have to install the extension which you can obtain from "}, tabContent);
