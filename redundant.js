@@ -1349,7 +1349,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
         }
 
         // Check if the option=value syntax is allowed or required
-        if (hasValue && !["domain", "sitekey"].contains(currentOption)) {
+        if (hasValue && !["domain", "sitekey", "csp"].contains(currentOption)) {
           warn(11, line, currentOption);
           return {status: status.INVALID};
         }
