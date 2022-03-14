@@ -180,6 +180,9 @@ var startWorker = function(data, secondTime, returnWhenDone) {
       Types = {ALL: 0};
   [
     "document",
+    "webrtc",
+    "websocket",
+    "csp",
     "elemhide",
     "font",
     "genericblock",
