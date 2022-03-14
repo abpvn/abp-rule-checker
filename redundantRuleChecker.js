@@ -462,7 +462,7 @@ var startToolDomainCheck = function() {
       chromeConnect(maxIndent, true);
       var div = createTag("div", {"class": "workerUnsupported extensionMissing hidden"}, {textContent: "Unfortunately this tool has to perform actions that web pages are not allowed to do by themselves. Browser extensions have more permissions and can therefore aid in this process. Therefore, in order to use this tool, you have to install the extension which you can obtain from "}, tabContent);
       createTag("a", {href: extensionURL, title: "Install", target: "_blank"}, {textContent: "here"}, div);
-      createText("You must enable chrome developer mode then load extracted folder as extracted extention. After installing, you also have to give the extension access to the " + (isOpera() ? "private" : "incognito") + " mode via a check box on about://extensions . ", div);
+      createText(". You must enable chrome developer mode then load extracted folder as extracted extention. After installing, you also have to give the extension access to the " + (isOpera() ? "private" : "incognito") + " mode via a check box on about://extensions . ", div);
       var aRetry = createTag("a", {href: "#", title: "Retry!"}, {textContent: "Retry!"}, div);
       aRetry.addEventListener("click", function(e) {
         e.preventDefault();
