@@ -21,7 +21,7 @@ var similarity = function(lines) {
   lines = lines.split("\n");
   var i, j, sI, score,
       result = {},
-      ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\s*(\@)?\s*\#([^\{\}]+)$/, /**/
+      ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\??\s*(\@)?\s*\#([^\{\}]+)$/, /**/
       BLOCKING = /^(@@)?(.*?)(\$~?[\w\-]+(?:=[^,\s]+)?(?:,~?[\w\-]+(?:=[^,\s]+)?)*)?$/, /**/
       MANYSTARS_G = /\*{2,}/g, /**/
       B_USELESSFILTERSTART = /^\|\*/, /**/

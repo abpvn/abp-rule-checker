@@ -17,7 +17,7 @@
 var onlyDomainDiffers = function(lines) {
   importScripts("redundant.js");
 
-  var ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\s*(\@)?\s*\#([^\{\}]+)$/, /**/
+  var ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\??\s*(\@)?\s*\#([^\{\}]+)$/, /**/
       BLOCKING = /^(@@)?(.*?)(\$~?[\w\-]+(?:=[^,\s]+)?(?:,~?[\w\-]+(?:=[^,\s]+)?)*)?$/, /**/
       B_DOMAINIS = /(?:\,|\$|^)domain\=([^\,]+)/, /**/
       STARTCOMMA = /^\,/,

@@ -18,7 +18,7 @@ var hidingToBlocking = function(lines) {
   importScripts("redundant.js");
   startWorker({filters: ""}, false, true); // import it's "globals"
 
-  var ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\s*(\@)?\s*\#([^\{\}]+)$/, /**/
+  var ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\??\s*(\@)?\s*\#([^\{\}]+)$/, /**/
       H_NODENAMESELECTOR = /^((?:\-?(?:[_a-z]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])(?:[\-_a-z0-9]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])*|\*)?\|)?((?:\*|\-?(?:[_a-z]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])(?:[\-_a-z0-9]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])*))$/i, /**/
       H_ATTRIBUTENAME = /^\[\s*(data|src)\s*\W?\=/i,
       WHITESPACE_G = /\s+/g, /**/

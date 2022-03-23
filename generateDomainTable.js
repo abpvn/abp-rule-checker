@@ -22,7 +22,7 @@ var extractDomainsFromFilters = function(lines) {
   var i, j, domains, match, line, isThirdParty, firstParty,
    knownThirdPartyDomains = [],
    domainInfo = {},
-   ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\s*(\@)?\s*\#([^\{\}]+)$/, /**/
+   ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\??\s*(\@)?\s*\#([^\{\}]+)$/, /**/
    B_DOMAINIS = /(?:\,|\$|^)domain\=([^\,]+)/i, /**/
    B_THIRDPARTY = /(?:\,|\$)third[_\-]party(?:\,|$)/i,
    WHITESPACE_G = /\s+/g, /**/
