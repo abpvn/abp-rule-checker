@@ -183,6 +183,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     "webrtc",
     "websocket",
     "csp",
+    "rewrite",
     "elemhide",
     "font",
     "genericblock",
