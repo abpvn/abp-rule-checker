@@ -212,6 +212,8 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     }
   });
 
+  var hasValueOptions = ["domain", "sitekey", "csp", "rewrite"];
+
   var status = {
         OK: 1,
         INVALID: 2,
@@ -1350,7 +1352,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
         }
 
         // Check if the option=value syntax is allowed or required
-        if (hasValue && !["domain", "sitekey", "csp"].contains(currentOption)) {
+        if (hasValue && !hasValueOptions.contains(currentOption)) {
           warn(11, line, currentOption);
           return {status: status.INVALID};
         }
