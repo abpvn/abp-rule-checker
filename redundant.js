@@ -2636,7 +2636,7 @@ top:  for (j=0; j<redRule_attr.length; j++) {
         oldStyleToNewSuggestion(line, line.replace(WHITESPACE_G, ""));
         return status.IGNORE;
       }
-      if (line.includes("$csp=")) {
+      if (line.includes("$csp=") || line.includes("//scriptlet") || line.includes("#$#")) {
         return status.IGNORE;
       }
       warn(63, line);
