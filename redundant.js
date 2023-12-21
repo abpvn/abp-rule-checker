@@ -94,7 +94,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
       // Hiding rule identifier:
       //   \-?(?:[_a-z]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])(?:[\-_a-z0-9]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])*
       ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\??\s*(\@)?\s*\#([^\{\}]+)$/, /**/
-      PROBABLYELEMHIDE = /^.*?\#\s*\@*\s*\#[\#\.\w\[].+/,
+      PROBABLYELEMHIDE = /^.*?[^\$]\#\s*\@*\s*\#[\#\.\w\[].+/,
       BLOCKING = /^(@@)?(.*?)(\$~?[\w\-]+(?:=[^,\s]+)?(?:,~?[\w\-]+(?:=[^,\s]+)?)*)?$/, /**/
       PROBABLYOPTIONS = /\$,*~?[\w\-_]+(?:=[^,\s]*)?(?:,+~?[\w\-_]+(?:=[^,\s]*)?)*,*$/,
       B_REGEX = /^\/.+\/$/, /**/
