@@ -94,7 +94,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
       // Hiding rule identifier:
       //   \-?(?:[_a-z]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])(?:[\-_a-z0-9]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])*
       ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\??\s*(\@)?\s*\#([^\{\}]+)$/, /**/
-      PROBABLYELEMHIDE = /^.*?\#\s*\@*\s*\#.+/,
+      PROBABLYELEMHIDE = /^.*?\#\s*\@*\s*\#[\#\.\w\[].+/,
       BLOCKING = /^(@@)?(.*?)(\$~?[\w\-]+(?:=[^,\s]+)?(?:,~?[\w\-]+(?:=[^,\s]+)?)*)?$/, /**/
       PROBABLYOPTIONS = /\$,*~?[\w\-_]+(?:=[^,\s]*)?(?:,+~?[\w\-_]+(?:=[^,\s]*)?)*,*$/,
       B_REGEX = /^\/.+\/$/, /**/
@@ -905,6 +905,12 @@ var startWorker = function(data, secondTime, returnWhenDone) {
                   result[depth].push(":" + match[1]);
                   break;
                 }
+                case "remove-attr": case "style":
+                  if (!match[2]) {
+                    return {status: status.INVALID};
+                  }
+                  result[depth].push(match[2]);
+                  break;
                 default: {
                   if (!H_BROWSERPSEUDOSELECTOR.test(match[1])) {
                     return {status: status.INVALID};
@@ -928,6 +934,12 @@ var startWorker = function(data, secondTime, returnWhenDone) {
               break;
             }
             return {status: status.INVALID};
+          }
+          case "j": {
+            match = current.match(/js\(([\w-]+)\,\s(.+)(\,\s(.+))?\)$/);
+            if (match) {
+              return {status: status.IGNORE};
+            }
           }
           default: {
             match = current.match(H_NODENAMESELECTOR);
@@ -2622,6 +2634,9 @@ top:  for (j=0; j<redRule_attr.length; j++) {
     if (WHITESPACE.test(line)) {
       if (OLDSTYLEHIDING.test(line.replace(WHITESPACE_G, ""))) {
         oldStyleToNewSuggestion(line, line.replace(WHITESPACE_G, ""));
+        return status.IGNORE;
+      }
+      if (line.includes("$csp=")) {
         return status.IGNORE;
       }
       warn(63, line);
