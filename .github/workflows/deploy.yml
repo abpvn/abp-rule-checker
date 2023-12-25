@@ -17,10 +17,10 @@ jobs:
 
             - name: Deploy to Main Server
               run: |
-                rsync -have "ssh -i $SSH_DEPLOY_KEY" --exclude=".keys" . $SSH_DEPLOY_USER@$SSH_MAIN_HOST:$DEPLOY_PATH
+                rsync -have "ssh -i .keys/deploy_key.pem" --exclude=".keys" . $SSH_DEPLOY_USER@$SSH_MAIN_HOST:$DEPLOY_PATH
             - name: Deploy to backup Server
               run: |
-                rsync -have "ssh -i $SSH_DEPLOY_KEY" --exclude=".keys" . $SSH_DEPLOY_USER@$SSH_BACKUP_HOST:$DEPLOY_PATH
+                rsync -have "ssh -i .keys/deploy_key.pem" --exclude=".keys" . $SSH_DEPLOY_USER@$SSH_BACKUP_HOST:$DEPLOY_PATH
 
             - name: Clean deply key file
               run: |
