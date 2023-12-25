@@ -1,4 +1,4 @@
-name: Deploy after push
+name: Auto Deploy
 
 on:
     push:
@@ -23,10 +23,10 @@ jobs:
 
             - name: Deploy to Main Server
               run: |
-                rsync -have "ssh -i  ${{env.SSH_KEY_FILE_PATH}} -o StrictHostKeyChecking=no" --exclude=".keys" . ${{secrets.SSH_DEPLOY_USER}}@${{secrets.SSH_MAIN_HOST}}:${{secrets.DEPLOY_PATH}}
+                rsync -have "ssh -i  ${{env.SSH_KEY_FILE_PATH}} -o StrictHostKeyChecking=no" --exclude=".keys" --exclude=".git" --exclude=".github" . ${{secrets.SSH_DEPLOY_USER}}@${{secrets.SSH_MAIN_HOST}}:${{secrets.DEPLOY_PATH}}
             - name: Deploy to backup Server
               run: |
-                rsync -have "ssh -i  ${{env.SSH_KEY_FILE_PATH}} -o StrictHostKeyChecking=no" --exclude=".keys" . ${{secrets.SSH_DEPLOY_USER}}@${{secrets.SSH_BACKUP_HOST}}:${{secrets.DEPLOY_PATH}}
+                rsync -have "ssh -i  ${{env.SSH_KEY_FILE_PATH}} -o StrictHostKeyChecking=no" --exclude=".keys" --exclude=".git" --exclude=".github" . ${{secrets.SSH_DEPLOY_USER}}@${{secrets.SSH_BACKUP_HOST}}:${{secrets.DEPLOY_PATH}}
 
             - name: Clean deply key file
               run: |
