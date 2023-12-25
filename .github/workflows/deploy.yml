@@ -18,7 +18,7 @@ jobs:
             - name: Create deploy key file
               run: |
                 mkdir ${{env.SSH_KEY_FILE_DIR}}
-                echo ${{secrets.SSH_DEPLOY_KEY}} > ${{env.SSH_KEY_FILE_PATH}}
+                echo "${{secrets.SSH_DEPLOY_KEY}}" > ${{env.SSH_KEY_FILE_PATH}}
                 chmod 600  ${{env.SSH_KEY_FILE_PATH}}
 
             - name: Deploy to Main Server
