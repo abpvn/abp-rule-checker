@@ -1,7 +1,13 @@
+name: Deploy after push
+
 on:
     push:
       branches: [ "master" ]
     workflow_dispatch:
+
+env:
+  SSH_KEY_FILE_DIR: .keys
+  SSH_KEY_FILE_PATH: .keys/deploy_key.pem
 
 jobs:
     deploy:
@@ -11,19 +17,19 @@ jobs:
 
             - name: Create deploy key file
               run: |
-                mkdir .keys
-                echo $SSH_DEPLOY_KEY > .keys/deploy_key.pem
-                chmod 600 .keys/deploy_key.pem
+                mkdir ${{env.SSH_KEY_FILE_DIR}}
+                echo ${{secrets.SSH_DEPLOY_KEY}} > ${{env.SSH_KEY_FILE_PATH}}
+                chmod 600  ${{env.SSH_KEY_FILE_PATH}}
 
             - name: Deploy to Main Server
               run: |
-                rsync -have "ssh -i .keys/deploy_key.pem" --exclude=".keys" . $SSH_DEPLOY_USER@$SSH_MAIN_HOST:$DEPLOY_PATH
+                rsync -have "ssh -i  ${{env.SSH_KEY_FILE_PATH}}" --exclude=".keys" . ${{secrets.SSH_DEPLOY_USER}}@${{secrets.SSH_MAIN_HOST}}:${{secrets.DEPLOY_PATH}}
             - name: Deploy to backup Server
               run: |
-                rsync -have "ssh -i .keys/deploy_key.pem" --exclude=".keys" . $SSH_DEPLOY_USER@$SSH_BACKUP_HOST:$DEPLOY_PATH
+                rsync -have "ssh -i  ${{env.SSH_KEY_FILE_PATH}}" --exclude=".keys" . ${{secrets.SSH_DEPLOY_USER}}@${{secrets.SSH_BACKUP_HOST}}:${{secrets.DEPLOY_PATH}}
 
             - name: Clean deply key file
               run: |
-                rm -rf .keys
+                rm -rf ${{env.SSH_KEY_FILE_DIR}}
 
 
