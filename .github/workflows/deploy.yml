@@ -1,0 +1,29 @@
+on:
+    push:
+      branches: [ "master" ]
+    workflow_dispatch:
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Create deploy key file
+              run: |
+                mkdir .keys
+                echo $SSH_DEPLOY_KEY > .keys/deploy_key.pem
+                chmod 600 .keys/deploy_key.pem
+
+            - name: Deploy to Main Server
+              run: |
+                rsync -have "ssh -i $SSH_DEPLOY_KEY" --exclude=".keys" . $SSH_DEPLOY_USER@$SSH_MAIN_HOST:$DEPLOY_PATH
+            - name: Deploy to backup Server
+              run: |
+                rsync -have "ssh -i $SSH_DEPLOY_KEY" --exclude=".keys" . $SSH_DEPLOY_USER@$SSH_BACKUP_HOST:$DEPLOY_PATH
+
+            - name: Clean deply key file
+              run: |
+                rm -rf .keys
+
+
