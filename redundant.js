@@ -168,7 +168,9 @@ var startWorker = function(data, secondTime, returnWhenDone) {
         "match_case",
         "collapse",
         "domain",
-        "sitekey"
+        "sitekey",
+        "3p",
+        "redirect_rule",
       ],
       deprecated = {
         background: "image",
@@ -184,6 +186,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     "websocket",
     "csp",
     "rewrite",
+    "redirect_rule",
     "elemhide",
     "font",
     "genericblock",
@@ -212,7 +215,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     }
   });
 
-  var hasValueOptions = ["domain", "sitekey", "csp", "rewrite"];
+  var hasValueOptions = ["domain", "sitekey", "csp", "rewrite", "redirect_rule"];
 
   var status = {
         OK: 1,
