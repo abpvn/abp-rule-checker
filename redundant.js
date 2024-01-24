@@ -908,7 +908,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
                   result[depth].push(":" + match[1]);
                   break;
                 }
-                case "remove-attr": case "style":
+                case "remove-attr": case "style": case 'has':
                   if (!match[2]) {
                     return {status: status.INVALID};
                   }
