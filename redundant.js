@@ -1232,11 +1232,13 @@ var startWorker = function(data, secondTime, returnWhenDone) {
           });
         } else if (l[0] === "[") {
           attrmatch = l.match(H_ATTRSELECTORNOVALUE);
-          selectors.attr[j].push({
-            attr: attrmatch[2],
-            namespace: attrmatch[1] || "",
-            withoutValue: true
-          });
+          if (attrmatch) {
+            selectors.attr[j].push({
+              attr: attrmatch[2],
+              namespace: attrmatch[1] || "",
+              withoutValue: true
+            });
+          }
         } else if (l.length === 1 && H_TREESELECTORCOMMA.test(l)) {
           selectors.tree.push(l);
         } else if (l.startsWith(":nth-")) {
