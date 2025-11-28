@@ -171,6 +171,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
         "sitekey",
         "3p",
         "redirect_rule",
+        "redirect"
       ],
       deprecated = {
         background: "image",
@@ -187,6 +188,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     "csp",
     "rewrite",
     "redirect_rule",
+    "redirect",
     "elemhide",
     "font",
     "genericblock",
@@ -215,7 +217,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     }
   });
 
-  var hasValueOptions = ["domain", "sitekey", "csp", "rewrite", "redirect_rule"];
+  var hasValueOptions = ["domain", "sitekey", "csp", "rewrite", "redirect_rule", "redirect"];
 
   var status = {
         OK: 1,
