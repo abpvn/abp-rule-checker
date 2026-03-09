@@ -12,6 +12,12 @@
     <p id="topmsg">This page lists the changes to the redundancy checker, if said changes had an effect on the behaviour of the check</p>
 
     <h3>By ABPVN:</h3>
+    <h4>March 9, 2026</h4>
+    <ul>
+      <li>Fix <strong>AdGuard</strong> scriptlet parsing for <samp>##%#//scriptlet(...)</samp> so it is not validated as a CSS selector</li>
+      <li>Add/complete scriptlet redundancy support for <strong>uBlock Origin</strong> <samp>##+js(...)</samp>, <strong>AdGuard</strong> <samp>##%#//scriptlet(...)</samp>, and <strong>Adblock Plus</strong> <samp>#$#...</samp></li>
+      <li>Reject invalid scriptlet exclusion syntaxes <samp>#@%#</samp> and <samp>#@$#</samp></li>
+    </ul>
     <h4>November 28, 2025</h4>
     <ul>
       <li>Add support for <strong>Ublock Origin</strong> specific rule redirect</li>

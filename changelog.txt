@@ -1,3 +1,33 @@
+By ABPVN:
+
+March 9, 2026:
+-Fix: AdGuard scriptlet parsing for '##%#//scriptlet(...)' so it is not validated as a CSS selector
+-New: scriptlet redundancy support for uBlock Origin '##+js(...)', AdGuard '##%#//scriptlet(...)', and Adblock Plus '#$#...'
+-Modified: reject invalid scriptlet exclusion syntaxes '#@%#' and '#@$#'
+
+November 28, 2025:
+-New: add support for uBlock Origin specific rule redirect
+
+December 25, 2023:
+-New: add support for uBlock Origin specific rule 3p,redirect-rule
+
+December 21, 2023:
+-New: add support for uBlock Origin +js and html, style rule
+-Fix: incorrect whitespace warning for $csp, AdGuard snippet, AdGuard html rule
+
+November 02, 2022:
+-New: add support for Adblock Plus rewrite option (||domain.com/something$rewrite=abp-resouce:[abp-resouce-name])
+
+March 23, 2022:
+-New: add support for Adblock Plus specific rule (domain.com#?# syntax)
+
+September 10, 2018:
+-New: allow protocol options webrtc, websocket, csp currently supported by ABP
+
+
+By Famlam:
+
+
 January 13, 2014:
 -New: warn if ',$' is used to separate rules (example: $script,$domain=com)
 -New: detect redundancies in hiding rules if a #@# rule excluded part of the rule (example: nl#@##ads and ###ads together with com##div#ads)

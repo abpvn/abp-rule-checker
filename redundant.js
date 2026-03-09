@@ -131,6 +131,9 @@ var startWorker = function(data, secondTime, returnWhenDone) {
       H_BROWSERPSEUDOSELECTOR = /^\:?\-[a-z]+\-.+/,
       OLDSTYLEHIDING = /^[^\/\*\|\@\"\!]*?\#(?:[\w\-]+|\*)(?:\([\w\-]+(?:[\$\^\*]?=[^\(\)\"]*)?\))*$/,
       COMMENTLINE = /^\s*(?:\!|.*\[Adblock.*\]|\s+$)/i, /**/
+      H_UBO_SCRIPTLET = /^\+js\(.+\)$/,
+      H_AG_SCRIPTLET_RULE = /^([^\/\*\|\@\"\!]*?)\#\#\%\#(\/\/scriptlet\(.+\))$/,
+      H_ABP_SCRIPTLET_RULE = /^([^\/\*\|\@\"\!]*?)\#\$\#(.+)$/,
       B_STARTWILDCARDPIPE_G = /^(?:\*|\.?\*\\)\|/g, /**/
       B_ENDWILDCARDPIPE_G = /\|\.?\*$/g, /**/
       H_ATTRSELECTORNOVALUE = /^\[\s*(\-?(?:[_a-z]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])(?:[\-_a-z0-9]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])*\||\*\||\|)?(\-?(?:[_a-z]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])(?:[\-_a-z0-9]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])*)\s*\]$/i,
@@ -941,7 +944,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
             return {status: status.INVALID};
           }
           case "j": {
-            match = current.match(/js\(([\w-]+)\,\s(.+)(\,\s(.+))?\)$/);
+            match = current.match(/^js\(.+\)$/);
             if (match) {
               return {status: status.IGNORE};
             }
@@ -1277,9 +1280,10 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     //   nothing
     var object, j, r, sites,
         match = shimMatch || line.match(ELEMHIDE),
-        parsedRule = shimParsedRule || prepareHidingRule(match[3]).rules;
+      isScriptlet = H_UBO_SCRIPTLET.test(match[3].trim()) || (shimMatch && (H_AG_SCRIPTLET_RULE.test(line) || H_ABP_SCRIPTLET_RULE.test(line))),
+        parsedRule = isScriptlet ? null : (shimParsedRule || prepareHidingRule(match[3]).rules);
 
-    if (parsedRule.length > 1 && !match[2]) {
+    if (!isScriptlet && parsedRule.length > 1 && !match[2]) {
       for (r=0; r<parsedRule.length; r++) {
         sortHidingIntoCategories(line, match, parsedRule.slice(r, r+1));
       }
@@ -1287,7 +1291,8 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     }
 
     object = {
-      selectors: match[2] ? {} : getSelectorsForMatching(parsedRule[0]),
+      selectors: (match[2] || isScriptlet) ? {} : getSelectorsForMatching(parsedRule[0]),
+      isScriptlet: isScriptlet,
       excludedDomains: [],
       includedDomains: [],
       isWhitelist: (match[2] || data.modifiers.matchWhitelist ? true : false),
@@ -2224,6 +2229,11 @@ top:  for (j=0; j<redRule_attr.length; j++) {
             return;
           }
           if (!sJ.isWhitelist && !sI.isWhitelist) {
+            if (sI.isScriptlet || sJ.isScriptlet) {
+              if (sI.ruleString !== sJ.ruleString) {
+                return;
+              }
+            } else {
             if (sJ.selectors.tree.length > sI.selectors.tree.length) {
               return;
             }
@@ -2345,6 +2355,7 @@ top:  for (j=0; j<redRule_attr.length; j++) {
               if (possible_pathways.length === 0) {
                 return;
               }
+            }
             }
 
             // Do not make hiding rules redundant if the redundant rule is whitelisted for this domain
@@ -2602,6 +2613,12 @@ top:  for (j=0; j<redRule_attr.length; j++) {
       warn(63, line);
       match[1] = match[1].trim();
     }
+    if (H_UBO_SCRIPTLET.test(match[3].trim())) {
+      if (match[1] && !data.modifiers.ignoreDomains) {
+        return checkForBrokenDomains(match[1].split(","), line, {ignoreBroken: noWarnings, syntax: syntax.hiding}).status;
+      }
+      return status.OK;
+    }
     isGoodRule = prepareHidingRule(match[3], false, line, noWarnings || match[2] === "@");
     if (isGoodRule.status !== status.OK) {
       if (!noWarnings && isGoodRule.status === status.INVALID) {
@@ -2733,10 +2750,22 @@ top:  for (j=0; j<redRule_attr.length; j++) {
   };
 
   var begin = function() {
-    var i, warningContainsRedundantRules, betterRule,
+    var i, warningContainsRedundantRules, betterRule, agMatch, abpMatch, agShim,
         lines = getLinesWithoutDuplicates();
     for (i=0; i<lines.length; i++) {
-      if (ELEMHIDE.test(lines[i])) {
+      if ((agMatch = lines[i].match(H_AG_SCRIPTLET_RULE)) || (abpMatch = lines[i].match(H_ABP_SCRIPTLET_RULE))) {
+        if (agMatch) {
+          agShim = [agMatch[0], agMatch[1], undefined, agMatch[2]];
+        } else {
+          agShim = [abpMatch[0], abpMatch[1], undefined, abpMatch[2]];
+        }
+        if (!agShim[1] || data.modifiers.ignoreDomains ||
+            checkForBrokenDomains(agShim[1].split(","), lines[i], {ignoreBroken: false, syntax: syntax.hiding}).status === status.OK) {
+          sortHidingIntoCategories(lines[i], agShim);
+        }
+        agMatch = null;
+        abpMatch = null;
+      } else if (ELEMHIDE.test(lines[i])) {
         if (checkForBrokenHidingRules(lines[i]) === status.OK) {
           sortHidingIntoCategories(lines[i]);
         }
