@@ -132,7 +132,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
       OLDSTYLEHIDING = /^[^\/\*\|\@\"\!]*?\#(?:[\w\-]+|\*)(?:\([\w\-]+(?:[\$\^\*]?=[^\(\)\"]*)?\))*$/,
       COMMENTLINE = /^\s*(?:\!|.*\[Adblock.*\]|\s+$)/i, /**/
       H_UBO_SCRIPTLET = /^\+js\(.+\)$/,
-      H_AG_SCRIPTLET_RULE = /^([^\/\*\|\@\"\!]*?)\#\#\%\#(\/\/scriptlet\(.+\))$/,
+      H_AG_SCRIPTLET_RULE = /^([^\/\*\|\@\"\!]*?)\#\%\#(\/\/scriptlet\(.+\))$/,
       H_ABP_SCRIPTLET_RULE = /^([^\/\*\|\@\"\!]*?)\#\$\#(.+)$/,
       B_STARTWILDCARDPIPE_G = /^(?:\*|\.?\*\\)\|/g, /**/
       B_ENDWILDCARDPIPE_G = /\|\.?\*$/g, /**/
