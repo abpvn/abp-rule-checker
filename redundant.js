@@ -1282,7 +1282,8 @@ var startWorker = function(data, secondTime, returnWhenDone) {
         match = shimMatch || line.match(ELEMHIDE),
         isScriptlet = H_UBO_SCRIPTLET.test(match[3].trim()) || (shimMatch && (H_AG_SCRIPTLET_RULE.test(line) || H_ABP_SCRIPTLET_RULE.test(line))),
         isInlineCSS = !isScriptlet && /\{.+\}/.test(match[3].trim()),
-        parsedRule = (isScriptlet || isInlineCSS) ? null : (shimParsedRule || prepareHidingRule(match[3]).rules);
+        parsedRule = (isScriptlet || isInlineCSS) ? null : (shimParsedRule || prepareHidingRule(match[3]).rules),
+        emptySelectors = {literal: [[]], tree: [], attr: [[]], nth: [[]], not: [[]]};
 
     if (!isScriptlet && !isInlineCSS && parsedRule.length > 1 && !match[2]) {
       for (r=0; r<parsedRule.length; r++) {
@@ -1292,7 +1293,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     }
 
     object = {
-      selectors: (match[2] || isScriptlet || isInlineCSS) ? {} : getSelectorsForMatching(parsedRule[0]),
+      selectors: (match[2] || isScriptlet || isInlineCSS) ? emptySelectors : getSelectorsForMatching(parsedRule[0]),
       isScriptlet: isScriptlet,
       isInlineCSS: isInlineCSS,
       excludedDomains: [],
@@ -2231,7 +2232,7 @@ top:  for (j=0; j<redRule_attr.length; j++) {
             return;
           }
           if (!sJ.isWhitelist && !sI.isWhitelist) {
-            if (sI.isScriptlet || sJ.isScriptlet) {
+            if (sI.isScriptlet || sJ.isScriptlet || sI.isInlineCSS || sJ.isInlineCSS) {
               if (sI.ruleString !== sJ.ruleString) {
                 return;
               }
