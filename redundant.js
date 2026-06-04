@@ -2621,6 +2621,14 @@ top:  for (j=0; j<redRule_attr.length; j++) {
       }
       return status.OK;
     }
+
+    if (/\{.+\}/.test(match[3].trim())) {
+      if (match[1] && !data.modifiers.ignoreDomains) {
+        return checkForBrokenDomains(match[1].split(","), line, {ignoreBroken: noWarnings, syntax: syntax.hiding}).status;
+      }
+      return status.OK;
+    }
+
     isGoodRule = prepareHidingRule(match[3], false, line, noWarnings || match[2] === "@");
     if (isGoodRule.status !== status.OK) {
       if (!noWarnings && isGoodRule.status === status.INVALID) {
