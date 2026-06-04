@@ -93,7 +93,7 @@ var startWorker = function(data, secondTime, returnWhenDone) {
       // Regexes
       // Hiding rule identifier:
       //   \-?(?:[_a-z]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])(?:[\-_a-z0-9]|[^\u0000-\u009F]|\\[0-9a-f]{1,6}\s?|\\[^0-9a-f])*
-      ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\??\s*(\@)?\s*\#([^\{\}]+)$/, /**/
+      ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\??\s*(\@)?\s*\#(.+)$/, /**/
       PROBABLYELEMHIDE = /^.*?[^\$]\#\s*\@*\s*\#[\#\.\w\[].+/,
       BLOCKING = /^(@@)?(.*?)(\$~?[\w\-]+(?:=[^,\s]+)?(?:,~?[\w\-]+(?:=[^,\s]+)?)*)?$/, /**/
       PROBABLYOPTIONS = /\$,*~?[\w\-_]+(?:=[^,\s]*)?(?:,+~?[\w\-_]+(?:=[^,\s]*)?)*,*$/,
@@ -1280,10 +1280,11 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     //   nothing
     var object, j, r, sites,
         match = shimMatch || line.match(ELEMHIDE),
-      isScriptlet = H_UBO_SCRIPTLET.test(match[3].trim()) || (shimMatch && (H_AG_SCRIPTLET_RULE.test(line) || H_ABP_SCRIPTLET_RULE.test(line))),
-        parsedRule = isScriptlet ? null : (shimParsedRule || prepareHidingRule(match[3]).rules);
+        isScriptlet = H_UBO_SCRIPTLET.test(match[3].trim()) || (shimMatch && (H_AG_SCRIPTLET_RULE.test(line) || H_ABP_SCRIPTLET_RULE.test(line))),
+        isInlineCSS = !isScriptlet && /\{.+\}/.test(match[3].trim()),
+        parsedRule = (isScriptlet || isInlineCSS) ? null : (shimParsedRule || prepareHidingRule(match[3]).rules);
 
-    if (!isScriptlet && parsedRule.length > 1 && !match[2]) {
+    if (!isScriptlet && !isInlineCSS && parsedRule.length > 1 && !match[2]) {
       for (r=0; r<parsedRule.length; r++) {
         sortHidingIntoCategories(line, match, parsedRule.slice(r, r+1));
       }
@@ -1291,8 +1292,9 @@ var startWorker = function(data, secondTime, returnWhenDone) {
     }
 
     object = {
-      selectors: (match[2] || isScriptlet) ? {} : getSelectorsForMatching(parsedRule[0]),
+      selectors: (match[2] || isScriptlet || isInlineCSS) ? {} : getSelectorsForMatching(parsedRule[0]),
       isScriptlet: isScriptlet,
+      isInlineCSS: isInlineCSS,
       excludedDomains: [],
       includedDomains: [],
       isWhitelist: (match[2] || data.modifiers.matchWhitelist ? true : false),

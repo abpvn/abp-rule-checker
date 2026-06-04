@@ -17,7 +17,7 @@
 var onlyDomainDiffers = function(lines) {
   importScripts("redundant.js");
 
-  var ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\??\s*(\@)?\s*\#([^\{\}]+)$/, /**/
+  var ELEMHIDE = /^([^\/\*\|\@\"\!]*?)\#\??\s*(\@)?\s*\#(.+)$/, /**/
       H_AG_SCRIPTLET_RULE = /^([^\/\*\|\@\"\!]*?)\#\%\#(\/\/scriptlet\(.+\))$/,
       H_ABP_SCRIPTLET_RULE = /^([^\/\*\|\@\"\!]*?)\#\$\#(.+)$/,
       BLOCKING = /^(@@)?(.*?)(\$~?[\w\-]+(?:=[^,\s]+)?(?:,~?[\w\-]+(?:=[^,\s]+)?)*)?$/, /**/
