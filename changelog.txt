@@ -1,5 +1,8 @@
 By ABPVN:
 
+June 4, 2026:
+-New: add support for Adblock Plus inline CSS rules (domain##selector {style})
+
 March 9, 2026:
 -Fix: AdGuard scriptlet parsing for '##%#//scriptlet(...)' so it is not validated as a CSS selector
 -New: scriptlet redundancy support for uBlock Origin '##+js(...)', AdGuard '##%#//scriptlet(...)', and Adblock Plus '#$#...'
